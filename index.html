@@ -21,12 +21,20 @@
     @media(min-width:1000px){.desk{max-width:720px}}@media(max-width:1000px){.note{display:none}.flower{right:-22px;width:100px}}@media(max-width:600px){.page{padding:24px 16px}.topbar{font-size:8px;letter-spacing:1.2px}.topbar .route{letter-spacing:.3px}.brand{gap:6px}.intro{margin:38px 0 27px}.intro p{font-size:11px}.eyebrow{font-size:8px;letter-spacing:2px}.desk{padding:12px 4px 20px}.paper{padding:38px 25px 28px;transform:rotate(-.35deg)}.letter-meta{font-size:7px;letter-spacing:1px;margin-bottom:24px}.letter{font-size:16px;line-height:32px;background:repeating-linear-gradient(transparent 0,transparent 31px,var(--line) 31px,var(--line) 32px)}.letter .greeting{font-size:29px;line-height:32px}.letter .parents{font-size:14px}.flower{width:65px;height:150px;right:-8px;bottom:53px}.paper-footer{font-size:6px;letter-spacing:1px}.under-sheet{inset:21px 8px 20px 10px;transform:rotate(.8deg)}.sign-off{padding-right:8px}.tape{width:105px;height:28px}.footnote{line-height:1.8;font-size:8px}.footer{margin-top:28px}}
     @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
     @media print{body{background:white}.topbar,.intro,.bottom,.footer,.note,.flower,.tape,.under-sheet{display:none}.page,.desk{padding:0;max-width:none}.paper{transform:none;box-shadow:none;border:0;padding:10px 35px}.letter{font-size:15px;line-height:28px;background:none}.letter p{margin-bottom:12px}.sign-off{break-inside:avoid}}
+    .music-section{max-width:400px;margin:22px auto 0;text-align:center}.music-toggle{display:inline-flex;gap:9px;align-items:center;border:1px solid #c4a291;background:#fff8ec80;border-radius:999px;padding:10px 18px;color:var(--wine);font-size:11px;cursor:pointer}.music-toggle:hover{background:#fff8ec}.music-panel{margin:16px auto 0;background:var(--paper);padding:10px;border:1px solid #e2d4c1;border-radius:10px;box-shadow:0 8px 24px #6952340c}.music-panel[hidden]{display:none}.music-panel iframe{display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;border-radius:5px}.music-panel p{font-size:10px;line-height:1.8;margin:10px 3px 3px;color:#967b68}.music-panel a{color:var(--wine);text-underline-offset:3px}@media print{.music-section{display:none}}
   </style>
 </head>
 <body>
   <main class="page">
     <header class="topbar"><div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="5" width="20" height="14" rx="1"/><path d="m2 5 10 8L22 5"/></svg><span>Một lá thư dành riêng em</span></div><span class="route">Hà Nội <span aria-hidden="true">↝</span> nơi có em</span></header>
     <section class="intro" aria-labelledby="title"><div class="eyebrow">Một ngày đặc biệt · Một người đặc biệt</div><h1 id="title">Gửi Joyce, với thương yêu</h1><p>Có những điều, anh muốn gửi em bằng một lá thư.<br>Và bằng tất cả sự chân thành.</p></section>
+    <section class="music-section" aria-label="Nhạc dành cho em">
+      <button class="music-toggle" id="music-toggle" type="button" aria-expanded="false" aria-controls="music-panel"><span aria-hidden="true">♫</span><span id="music-label">Bật nhạc, rồi mình đọc thư nhé</span></button>
+      <div class="music-panel" id="music-panel" hidden>
+        <iframe id="music-player" title="Bài nhạc anh gửi Joyce trên YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <p>Nếu nhạc chưa bắt đầu, em chạm nút phát trong video nhé.<br><a href="https://www.youtube.com/watch?v=lL8zmaMpMFw" target="_blank" rel="noopener noreferrer">Nghe trực tiếp trên YouTube ↗</a></p>
+      </div>
+    </section>
     <div class="desk"><div class="under-sheet" aria-hidden="true"></div><div class="tape" aria-hidden="true"></div>
       <div class="note" aria-hidden="true">Một chút thương,<br>gửi từ Hà Nội.<svg viewBox="0 0 80 50"><path d="M3 4Q10 39 65 29M55 21l12 8-11 10"/></svg></div>
       <article class="paper" aria-label="Thư chúc mừng sinh nhật Joyce">
@@ -51,6 +59,17 @@
   </main>
   <dialog id="promise" aria-labelledby="promise-title"><button class="close" id="close-promise" type="button" aria-label="Đóng lời nhắn">×</button><div class="modal-heart" aria-hidden="true">♡</div><h2 id="promise-title">Hẹn em một ngày thật gần.</h2><p>Lần tới, anh mong được tự tay đưa em món quà, chúc em sinh nhật vui vẻ, và nói những điều này khi được nhìn vào mắt em.</p><button class="promise-button" id="keep-promise" type="button">Gói lại một chút thương ♡</button></dialog>
   <script>
+    const musicToggle = document.getElementById('music-toggle');
+    const musicPanel = document.getElementById('music-panel');
+    const musicPlayer = document.getElementById('music-player');
+    const musicLabel = document.getElementById('music-label');
+    musicToggle.addEventListener('click', () => {
+      const opening = musicPanel.hidden;
+      musicPanel.hidden = !opening;
+      musicToggle.setAttribute('aria-expanded', String(opening));
+      musicLabel.textContent = opening ? 'Tắt nhạc' : 'Bật nhạc, rồi mình đọc thư nhé';
+      musicPlayer.src = opening ? 'https://www.youtube.com/embed/lL8zmaMpMFw?autoplay=1&loop=1&playlist=lL8zmaMpMFw&playsinline=1&rel=0' : 'about:blank';
+    });
     const promise = document.getElementById('promise');
     document.getElementById('open-promise').addEventListener('click', () => {
       promise.showModal();
